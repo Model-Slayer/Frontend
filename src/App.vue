@@ -27,11 +27,11 @@
 
       <v-spacer></v-spacer>
       <v-btn to="/login" text>
-        <v-text>Login</v-text>
+        <span>Login</span>
         <v-icon>mdi-login</v-icon>
       </v-btn>
       <v-btn to="/signup" text>
-        <v-text>Signup</v-text>
+        <span>Signup</span>
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
     </v-app-bar>

@@ -1,0 +1,156 @@
+<template>
+  <div class="baba">
+    <div class="container">
+      <h1 class="title">Welcome to our Chatbot feel free to talk to him</h1>
+      <div class="chat-container">
+        <div class="messages">
+          <div v-for="(message, i) in chat" :key="i" class="message">
+            <div :class="message.from == 'bot' ? 'bot' : 'user'">
+              <v-avatar class="avatar" color="indigo">
+                <v-icon dark>
+                  {{
+                    message.from == "bot"
+                      ? "mdi-robot-dead-outline"
+                      : "mdi-account-circle"
+                  }}
+                </v-icon>
+              </v-avatar>
+              <div class="content">
+                <div v-if="message.image">
+                  <v-img
+                    max-height="150"
+                    max-width="250"
+                    src="../assets/brook.jpg"
+                    class="photo"
+                  ></v-img>
+                </div>
+                <div class="messg">{{ message.message }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="preview">
+          <img :src="image_base64" alt="preview" class="img_preview">
+        </div>
+        <div class="input-group">
+          <v-text-field
+            class="text-input"
+            label="Type your text here"
+            v-model="text"
+          ></v-text-field>
+          <v-file-input v-model="image" @change="preview_image" accept="image/*"></v-file-input>
+          <v-btn @click="sendMessage" icon color="var(--v-primary-base)">
+            <v-icon>mdi-send</v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "chatbot",
+
+  data() {
+    return {
+      chat: [
+        { from: "bot", message: "how can I help u ?" },
+        { from: "user", message: "this is message yohohohoho ?" },
+        { from: "bot", message: "okay, bye " },
+        { from: "bot", message: "btw feel fear on human", image:true },
+      ],
+      text: "",
+      image: null,
+      image_base64: ""
+    };
+  },
+  methods: {
+    sendMessage() {
+      this.chat.push({
+        from: "user",
+        message: this.text,
+        image: !!this.image_base64,
+      });
+      this.message = "";
+      this.image_base64 = "";
+      this.image = null;
+    },
+    preview_image() {
+      this.image_base64 = URL.createObjectURL(this.image);
+    }
+  },
+};
+</script>
+
+<style>
+.baba {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+.container {
+  height: 70vh;
+  width: 70vw;
+  min-height: 600px;
+  padding: 0;
+  align-self: center;
+  background-color: var(--v-primary-lighten1);
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  margin: 10px;
+  margin-top: 30px;
+  color: white;
+}
+.chat-container {
+  height: 80%;
+  width: 100%;
+  background-color: #eee;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 8px;
+}
+.messages {
+  overflow: scroll;
+}
+.text-input {
+  width: 70%;
+  margin: 5px;
+}
+.input-group {
+  display: flex;
+  align-items: center;
+}
+.bot {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+.user {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  margin: 10px;
+}
+.messg {
+  margin: 8px;
+}
+.photo {
+  border-radius: 5px;
+}
+.preview{
+  max-width: 100%;
+  max-height: 180px;
+}
+.img_preview{
+  max-width: 100%;
+  max-height: 100%;
+}
+</style>
